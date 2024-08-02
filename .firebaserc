@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fodmapapp-f4b83": {
+      "hosting": {
+        "fodmapApp": [
+          "fodmapapp-f4b83"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fodmapapp-f4b83"
+  }
+}
