@@ -11,23 +11,24 @@ import { MainWindowComponent } from './main-window/main-window.component';
 import { DietWindowComponent } from './diet-window/diet-window.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainWindowComponent,
-    DietWindowComponent
-  ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore())
-  ],
+      BrowserModule,
+      AppRoutingModule,
+      BrowserAnimationsModule,
+      provideFirebaseApp(() => initializeApp(environment.firebase)),
+      provideFirestore(() => getFirestore()),
+      MainWindowComponent
+    ],
+    declarations: [
+      AppComponent,
+      DietWindowComponent
+    ],
+
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
 
 
-  
+
 }
