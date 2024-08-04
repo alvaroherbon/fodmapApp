@@ -8,6 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import { FoodServiceService } from '@services/food-service.service';
 
 
 
@@ -32,14 +33,22 @@ export class MainWindowComponent implements OnInit{
   myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]> | undefined;
+  foodNames: string[] = [];
+
+  constructor(private foodService: FoodServiceService) { }
 
   ngOnInit(): void {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
+    this.foodService.getAllFoodsNames().then(names => this.foodNames = names);
+
 
     
+  }
+  consultar() {
+   console.log(this.foodNames)
   }
 
   private _filter(value: string): string[] {
