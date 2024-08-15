@@ -111,10 +111,6 @@ endulzantes : Food[] = [
   { name: "Melaza", category: "ENDULZANTES", fodmap: "No" }
 ]
 
-  
-  
-
-  
 
   constructor(private firestore : Firestore) {}
 
@@ -126,6 +122,19 @@ endulzantes : Food[] = [
     });
     console.log("Document successfully written!", docRef.id);
   }
+
+  async getFoodByName(name: string) {
+    const q = query(collection(this.firestore, "foods"));
+    const querySnapshot = await getDocs(q);
+    let result = null;
+    querySnapshot.forEach((doc) => {
+      if(doc.data()['name'] == name){
+        result = doc.data();
+      } 
+    });
+    return result;
+  }
+
 
   async addAllFoods() {
     this.carnes.forEach(carne => {
@@ -160,6 +169,17 @@ endulzantes : Food[] = [
         foods.push(doc.data()['name']);
       });
       return foods; 
+  }
+
+  async getAllCategories(){
+    const categories: any[] = [];
+    const q = query(collection(this.firestore, "foods"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      if(!categories.includes(doc.data()['category']))
+      categories.push(doc.data()['category']);
+    });
+    return categories;
   }
 
 

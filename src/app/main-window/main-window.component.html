@@ -1,25 +1,30 @@
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-    <mat-card appearance="outlined">
-        <mat-card-header>
-            <mat-card-title> FodmapApp</mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="cardContent">
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Number</mat-label>
-                        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
-                            [matAutocomplete]="auto">
-                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                            @for (option of filteredOptions | async; track option) {
-                            <mat-option [value]="option">{{option}}</mat-option>
-                            }
-                        </mat-autocomplete>
-                    </mat-form-field>
-                </form>
+<app-toolbar></app-toolbar>
 
-                <button mat-raised-button color="primary" (click)="consultar()">Consultar</button>
-            </div>
-        </mat-card-content>
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <mat-card appearance="outlined" style="padding: 10vh;">
+        <form class="example-form">
+            <mat-form-field class="example-full-width" style="display: block;">
+                <mat-label>Alimento</mat-label>
+                <input type="text" placeholder="Selecciona uno" aria-label="Alimento" matInput
+                    [formControl]="nameControl" [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <ng-container *ngFor="let option of filteredOptions | async; track option">
+                        <mat-option [value]="option">{{option}}</mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" style="display: block;">
+                <mat-label>Categoria</mat-label>
+                <input type="text" placeholder="Selecciona uno" aria-label="Categoria" matInput
+                    [formControl]="categoryControl" [matAutocomplete]="category">
+
+                <mat-autocomplete autoActiveFirstOption #category="matAutocomplete">
+                    <ng-container *ngFor="let option of filteredCategories | async; track option">
+                        <mat-option [value]="option">{{option}}</mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+        <button mat-raised-button color="primary" (click)="consultar()">Consultar</button>
     </mat-card>
 </div>

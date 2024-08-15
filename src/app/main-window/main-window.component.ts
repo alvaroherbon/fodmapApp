@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, inject} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -9,6 +9,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { FoodServiceService } from '@services/food-service.service';
+import { CommonModule } from '@angular/common';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ToolbarComponent } from "../toolbar/toolbar.component";
+
 
 
 
@@ -27,34 +31,63 @@ import { FoodServiceService } from '@services/food-service.service';
     AsyncPipe,
     MatButtonModule,
     MatCardModule,
-  ],
+    CommonModule,
+    ToolbarComponent
+],
 })
 export class MainWindowComponent implements OnInit{
-  myControl = new FormControl('');
-  options: string[] = ['One', 'Two', 'Three'];
+  nameControl = new FormControl('');
+  categoryControl = new FormControl('');
   filteredOptions: Observable<string[]> | undefined;
+  filteredCategories: Observable<string[]> | undefined;
   foodNames: string[] = [];
+  categoryNames : string[] = [];
+  
+  
 
   constructor(private foodService: FoodServiceService) { }
 
   ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.nameControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
+    this.filteredCategories = this.categoryControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterCategories(value || '')),
+    );
     this.foodService.getAllFoodsNames().then(names => this.foodNames = names);
+    this.foodService.getAllCategories().then(categories => this.categoryNames = categories);
 
 
     
   }
   consultar() {
-   console.log(this.foodNames)
+    if(this.nameControl.value != ''){
+      this.foodService.getFoodByName(this.nameControl.value ?? '').then(food => {
+        if(food != null){
+          console.log(food);
+        } else {
+          
+        }
+      });
+    }
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    return this.foodNames.filter(food => food.toLowerCase().includes(filterValue));
   }
 
+  private _filterCategories(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.categoryNames.filter(food => food.toLowerCase().includes(filterValue));
+  }
+
+ 
+  
+  
 }
+

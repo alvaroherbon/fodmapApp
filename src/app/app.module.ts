@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { MainWindowComponent } from './main-window/main-window.component';
 import { DietWindowComponent } from './diet-window/diet-window.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   imports: [
@@ -17,11 +18,15 @@ import { DietWindowComponent } from './diet-window/diet-window.component';
       BrowserAnimationsModule,
       provideFirebaseApp(() => initializeApp(environment.firebase)),
       provideFirestore(() => getFirestore()),
-      MainWindowComponent
+      MainWindowComponent,
+      ToolbarComponent,
+      
     ],
     declarations: [
       AppComponent,
-      DietWindowComponent
+      DietWindowComponent,
+      
+      
     ],
 
   providers: [],
