@@ -1,7 +1,5 @@
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
     <mat-card appearance="outlined" style="padding: 10vh;">
-        <mat-card-title> Consultar Comida</mat-card-title>
-        <mat-card-subtitle>Si aparece en la lista es apto para consumir</mat-card-subtitle>
         <form class="example-form">
             <mat-form-field class="example-full-width" style="display: block;">
                 <mat-label>Alimento</mat-label>
@@ -13,7 +11,18 @@
                     </ng-container>
                 </mat-autocomplete>
             </mat-form-field>
+            <mat-form-field class="example-full-width" style="display: block;">
+                <mat-label>Categoria</mat-label>
+                <input type="text" placeholder="Selecciona uno" aria-label="Categoria" matInput
+                    [formControl]="categoryControl" [matAutocomplete]="category">
 
+                <mat-autocomplete autoActiveFirstOption #category="matAutocomplete">
+                    <ng-container *ngFor="let option of filteredCategories | async; track option">
+                        <mat-option [value]="option">{{option}}</mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
         </form>
+        <button mat-raised-button color="primary" (click)="add()">Agregar</button>
     </mat-card>
 </div>

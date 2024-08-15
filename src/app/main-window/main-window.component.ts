@@ -37,14 +37,11 @@ import { ToolbarComponent } from "../toolbar/toolbar.component";
 })
 export class MainWindowComponent implements OnInit{
   nameControl = new FormControl('');
-  categoryControl = new FormControl('');
+ 
   filteredOptions: Observable<string[]> | undefined;
-  filteredCategories: Observable<string[]> | undefined;
-  foodNames: string[] = [];
-  categoryNames : string[] = [];
+   foodNames: string[] = [];
+ 
   
-  
-
   constructor(private foodService: FoodServiceService) { }
 
   ngOnInit(): void {
@@ -52,27 +49,15 @@ export class MainWindowComponent implements OnInit{
       startWith(''),
       map(value => this._filter(value || '')),
     );
-    this.filteredCategories = this.categoryControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterCategories(value || '')),
-    );
     this.foodService.getAllFoodsNames().then(names => this.foodNames = names);
-    this.foodService.getAllCategories().then(categories => this.categoryNames = categories);
-
-
+   
     
   }
-  consultar() {
-    if(this.nameControl.value != ''){
-      this.foodService.getFoodByName(this.nameControl.value ?? '').then(food => {
-        if(food != null){
-          console.log(food);
-        } else {
-          
-        }
-      });
-    }
+
+  updateFoodList() {
+    this.foodService.getAllFoodsNames().then(names => this.foodNames = names);
   }
+  
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -80,11 +65,7 @@ export class MainWindowComponent implements OnInit{
     return this.foodNames.filter(food => food.toLowerCase().includes(filterValue));
   }
 
-  private _filterCategories(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.categoryNames.filter(food => food.toLowerCase().includes(filterValue));
-  }
+ 
 
  
   

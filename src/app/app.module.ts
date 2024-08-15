@@ -10,6 +10,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { MainWindowComponent } from './main-window/main-window.component';
 import { DietWindowComponent } from './diet-window/diet-window.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { AddWindowComponent } from './add-window/add-window.component';
 
 @NgModule({
   imports: [
@@ -19,12 +20,15 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
       provideFirebaseApp(() => initializeApp(environment.firebase)),
       provideFirestore(() => getFirestore()),
       MainWindowComponent,
+      DietWindowComponent,
+      AddWindowComponent,
       ToolbarComponent,
+      
       
     ],
     declarations: [
       AppComponent,
-      DietWindowComponent,
+      
       
       
     ],
