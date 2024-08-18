@@ -10,6 +10,29 @@
                 {{'\n' + 'Desayuno: ' + '\n' + (dieta?.breakfast?.join('\n') || '') + '\n\n' + 'Comida: ' + '\n' +  (dieta?.lunch?.join('\n') || '') + '\n\n' + 'Cena: ' + '\n' + (dieta?.dinner?.join('\n') || '') }}
                 </textarea>
             </div>
+            <ul>
+                <li *ngFor="let item of dieta?.breakfast">
+                    {{ item }}
+                    <button mat-icon-button color="warn" (click)="deleteItem(item)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </li>
+            </ul>
+            <ul>
+                <li *ngFor="let item of dieta?.lunch">
+                    {{ item }}
+                    <button mat-icon-button color="warn" (click)="deleteItem(item)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </li>
+            </ul>
+            <ul>
+                <li *ngFor="let item of dieta?.dinner">
+                    {{ item }}
+                    <button mat-icon-button color="warn" (click)="deleteItem(item)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
-</div>
