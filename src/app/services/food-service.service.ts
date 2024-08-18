@@ -208,7 +208,7 @@ endulzantes : Food[] = [
 
   async getDiet(){
 
-    const diet: Diet = { breakfast: [], lunch: [], dinner: [] };
+    const diet: Diet = new Diet([], [], []);
     const q = query(collection(this.firestore, "diets"));
     const querySnapshot = await getDocs(q);
     const randomIndex = Math.floor(Math.random() * querySnapshot.size);
