@@ -1,1 +1,15 @@
-<p>diet-window works!</p>
+<div class="input-container">
+    <div class="input-container">
+        <div class="container">
+            <div class="button-container">
+                <button mat-raised-button color="primary" (click)="generarDieta()">Generar dieta</button>
+            </div>
+
+            <div class="input-container" *ngIf="showInput">
+                <textarea rows="4" class="input-text">
+                {{'\n' + 'Desayuno: ' + '\n' + (dieta?.breakfast?.join('\n') || '') + '\n\n' + 'Comida: ' + '\n' +  (dieta?.lunch?.join('\n') || '') + '\n\n' + 'Cena: ' + '\n' + (dieta?.dinner?.join('\n') || '') }}
+                </textarea>
+            </div>
+        </div>
+    </div>
+</div>

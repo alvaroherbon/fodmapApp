@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, inject} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {AsyncPipe} from '@angular/common';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -45,7 +45,7 @@ export class MainWindowComponent implements OnInit{
   constructor(private foodService: FoodServiceService) { }
 
   ngOnInit(): void {
-    this.filteredOptions = this.nameControl.valueChanges.pipe(
+   this.filteredOptions = this.nameControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );

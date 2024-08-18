@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, getDoc, getDocs, onSnapshot, query } from '@angular/fire/firestore';
+import { Diet } from '@models/diet';
 import { Food } from '@models/food';
 
 @Injectable({
@@ -164,10 +165,32 @@ endulzantes : Food[] = [
   async getAllFoodsNames(){
       const foods: any[] = [];
       const q = query(collection(this.firestore, "foods"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        foods.push(doc.data()['name']);
+     
+
+      // Subscribe to changes in the collection
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            const food = change.doc.data()['name'];
+            foods.push(food);
+          }
+          if (change.type === "modified") {
+            const food = change.doc.data()['name'];
+            const index = foods.findIndex((item) => item === food);
+            if (index !== -1) {
+              foods[index] = food;
+            }
+          }
+          if (change.type === "removed") {
+            const food = change.doc.data()['name'];
+            const index = foods.findIndex((item) => item === food);
+            if (index !== -1) {
+              foods.splice(index, 1);
+            }
+          }
+        });
       });
+
       return foods; 
   }
 
@@ -183,5 +206,184 @@ endulzantes : Food[] = [
   }
 
 
-  
+  async getDiet(){
+
+    const diet: Diet = { breakfast: [], lunch: [], dinner: [] };
+    const q = query(collection(this.firestore, "diets"));
+    const querySnapshot = await getDocs(q);
+    const randomIndex = Math.floor(Math.random() * querySnapshot.size);
+    const randomDoc = querySnapshot.docs[randomIndex].data();
+    diet.breakfast = randomDoc['breakfast'];
+    diet.lunch = randomDoc['lunch'];
+    diet.dinner = randomDoc['dinner'];
+    return diet;
+
+    
+
+}
+
+
+async saveDiet(diet : Diet){
+  const docRef = await addDoc(collection(this.firestore, "diets"), {
+    breakfast: diet.breakfast,
+    lunch: diet.lunch,
+    dinner: diet.dinner
+  });
+  console.log("Document successfully written!", docRef.id);
+}
+
+
+async saveDiets(){
+  const diet_day1: Diet = {
+    breakfast: [
+        "Pan de espelta tostado con mantequilla sin lactosa",
+        "Yogur sin lactosa con fresas y salvado de avena",
+        "Té verde"
+    ],
+    lunch: [
+        "Pechuga de pollo a la plancha",
+        "Quinoa con calabacín, zanahoria y pimiento rojo salteados",
+        "Melón",
+        "Agua con gas"
+    ],
+    dinner: [
+        "Pescado blanco al horno con limón y cilantro",
+        "Patata asada con espinacas salteadas",
+        "Mandarina",
+        "Té de menta"
+    ]
+};
+
+const diet_day2: Diet = {
+    breakfast: [
+        "Cereales de desayuno de avena con leche de almendra",
+        "Banana",
+        "Café con leche sin lactosa"
+    ],
+    lunch: [
+        "Carne de ternera a la parrilla",
+        "Arroz con lechuga, tomate y pepino",
+        "Naranja",
+        "Agua con gas"
+    ],
+    dinner: [
+        "Huevos revueltos con espinacas y pimiento rojo",
+        "Arepas de maíz",
+        "Fresas",
+        "Té de jengibre"
+    ]
+};
+
+const diet_day3: Diet = {
+    breakfast: [
+        "Galletas de espelta con mantequilla sin lactosa",
+        "Leche de arroz",
+        "Uvas frescas",
+        "Té de menta"
+    ],
+    lunch: [
+        "Carne de cordero al horno con jengibre",
+        "Polenta con berenjena y calabaza",
+        "Melón",
+        "Vino blanco (opcional)"
+    ],
+    dinner: [
+        "Jamón serrano con tortilla de patata",
+        "Ensalada de rúcula con albahaca y aceite de oliva",
+        "Kiwi",
+        "Té verde"
+    ]
+};
+const diet_day4: Diet = {
+  breakfast: [
+      "Tortitas de arroz con mantequilla sin lactosa",
+      "Leche de coco",
+      "Naranja",
+      "Café con leche sin lactosa"
+  ],
+  lunch: [
+      "Pescado azul a la parrilla con limón y albahaca",
+      "Arroz integral con espinacas salteadas",
+      "Mandarina",
+      "Agua con gas"
+  ],
+  dinner: [
+      "Pollo al horno con zanahorias y calabacín",
+      "Ensalada de rúcula y tomate con aceite de oliva",
+      "Melón",
+      "Té de menta"
+  ]
+};
+
+const diet_day5: Diet = {
+  breakfast: [
+      "Cereales de desayuno de espelta con leche de almendra",
+      "Fresas",
+      "Té de jengibre"
+  ],
+  lunch: [
+      "Carne de cerdo asada con hierbas",
+      "Quinoa con calabaza y pimiento rojo",
+      "Kiwi",
+      "Agua con gas"
+  ],
+  dinner: [
+      "Huevos cocidos con espinacas y cilantro",
+      "Tortitas de maíz",
+      "Uvas",
+      "Té verde"
+  ]
+};
+
+const diet_day6: Diet = {
+  breakfast: [
+      "Galletas sin gluten con mantequilla sin lactosa",
+      "Leche de arroz",
+      "Banana",
+      "Té de menta"
+  ],
+  lunch: [
+      "Pechuga de pavo a la plancha",
+      "Arroz con lechuga, pepino y zanahoria",
+      "Naranja",
+      "Agua con gas"
+  ],
+  dinner: [
+      "Pescado blanco al vapor con espinacas",
+      "Patata asada con rúcula",
+      "Fresas",
+      "Té de jengibre"
+  ]
+};
+
+const diet_day7: Diet = {
+  breakfast: [
+      "Pan de avena con mantequilla sin lactosa",
+      "Yogur sin lactosa con kiwi",
+      "Café con leche sin lactosa"
+  ],
+  lunch: [
+      "Carne de ternera estofada con zanahorias",
+      "Polenta con calabacín y berenjena",
+      "Mandarina",
+      "Agua con gas"
+  ],
+  dinner: [
+      "Huevos revueltos con espinacas y tomate",
+      "Tortitas de arroz",
+      "Melón",
+      "Té verde"
+  ]
+};
+
+
+
+const diets = [diet_day1, diet_day2, diet_day3, diet_day4, diet_day5, diet_day6, diet_day7];
+
+diets.forEach(diet => {
+  this.saveDiet(diet);
+});
+
+}
+ 
 }
