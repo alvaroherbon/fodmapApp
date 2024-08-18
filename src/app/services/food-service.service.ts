@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, collection, getDoc, getDocs, onSnapshot, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { Diet } from '@models/diet';
 import { Food } from '@models/food';
 
@@ -222,161 +222,167 @@ endulzantes : Food[] = [
 
 }
 
-
-async saveDiet(diet : Diet){
-  const docRef = await addDoc(collection(this.firestore, "diets"), {
-    breakfast: diet.breakfast,
-    lunch: diet.lunch,
-    dinner: diet.dinner
-  });
-  console.log("Document successfully written!", docRef.id);
+async saveDiet(diet: Diet, id?: number) {
+  if (id) {
+    await setDoc(doc(this.firestore, "diets", id.toString()), {
+      breakfast: diet.breakfast,
+      lunch: diet.lunch,
+      dinner: diet.dinner
+    }, { merge: true });
+  } else {
+    const docRef = await addDoc(collection(this.firestore, "diets"), {
+      breakfast: diet.breakfast,
+      lunch: diet.lunch,
+      dinner: diet.dinner
+    });
+    console.log("Document successfully written!", docRef.id);
+  }
 }
 
 
 async saveDiets(){
-  const diet_day1: Diet = {
-    breakfast: [
-        "Pan de espelta tostado con mantequilla sin lactosa",
-        "Yogur sin lactosa con fresas y salvado de avena",
-        "Té verde"
+  const diet_day1: Diet = new Diet(
+    [
+      "Pan de espelta tostado con mantequilla sin lactosa",
+      "Yogur sin lactosa con fresas y salvado de avena",
+      "Té verde"
     ],
-    lunch: [
-        "Pechuga de pollo a la plancha",
-        "Quinoa con calabacín, zanahoria y pimiento rojo salteados",
-        "Melón",
-        "Agua con gas"
+    [
+      "Pechuga de pollo a la plancha",
+      "Quinoa con calabacín, zanahoria y pimiento rojo salteados",
+      "Melón",
+      "Agua con gas"
     ],
-    dinner: [
-        "Pescado blanco al horno con limón y cilantro",
-        "Patata asada con espinacas salteadas",
-        "Mandarina",
-        "Té de menta"
+    [
+      "Pescado blanco al horno con limón y cilantro",
+      "Patata asada con espinacas salteadas",
+      "Mandarina",
+      "Té de menta"
     ]
-};
+  );
 
-const diet_day2: Diet = {
-    breakfast: [
-        "Cereales de desayuno de avena con leche de almendra",
-        "Banana",
-        "Café con leche sin lactosa"
+  const diet_day2: Diet = new Diet(
+    [
+      "Cereales de desayuno de avena con leche de almendra",
+      "Banana",
+      "Café con leche sin lactosa"
     ],
-    lunch: [
-        "Carne de ternera a la parrilla",
-        "Arroz con lechuga, tomate y pepino",
-        "Naranja",
-        "Agua con gas"
+    [
+      "Carne de ternera a la parrilla",
+      "Arroz con lechuga, tomate y pepino",
+      "Naranja",
+      "Agua con gas"
     ],
-    dinner: [
-        "Huevos revueltos con espinacas y pimiento rojo",
-        "Arepas de maíz",
-        "Fresas",
-        "Té de jengibre"
+    [
+      "Huevos revueltos con espinacas y pimiento rojo",
+      "Arepas de maíz",
+      "Fresas",
+      "Té de jengibre"
     ]
-};
+  );
 
-const diet_day3: Diet = {
-    breakfast: [
-        "Galletas de espelta con mantequilla sin lactosa",
-        "Leche de arroz",
-        "Uvas frescas",
-        "Té de menta"
+  const diet_day3: Diet = new Diet(
+    [
+      "Galletas de espelta con mantequilla sin lactosa",
+      "Leche de arroz",
+      "Uvas frescas",
+      "Té de menta"
     ],
-    lunch: [
-        "Carne de cordero al horno con jengibre",
-        "Polenta con berenjena y calabaza",
-        "Melón",
-        "Vino blanco (opcional)"
+    [
+      "Carne de cordero al horno con jengibre",
+      "Polenta con berenjena y calabaza",
+      "Melón",
+      "Vino blanco (opcional)"
     ],
-    dinner: [
-        "Jamón serrano con tortilla de patata",
-        "Ensalada de rúcula con albahaca y aceite de oliva",
-        "Kiwi",
-        "Té verde"
+    [
+      "Jamón serrano con tortilla de patata",
+      "Ensalada de rúcula con albahaca y aceite de oliva",
+      "Kiwi",
+      "Té verde"
     ]
-};
-const diet_day4: Diet = {
-  breakfast: [
+  );
+
+  const diet_day4: Diet = new Diet(
+    [
       "Tortitas de arroz con mantequilla sin lactosa",
       "Leche de coco",
       "Naranja",
       "Café con leche sin lactosa"
-  ],
-  lunch: [
+    ],
+    [
       "Pescado azul a la parrilla con limón y albahaca",
       "Arroz integral con espinacas salteadas",
       "Mandarina",
       "Agua con gas"
-  ],
-  dinner: [
+    ],
+    [
       "Pollo al horno con zanahorias y calabacín",
       "Ensalada de rúcula y tomate con aceite de oliva",
       "Melón",
       "Té de menta"
-  ]
-};
+    ]
+  );
 
-const diet_day5: Diet = {
-  breakfast: [
+  const diet_day5: Diet = new Diet(
+    [
       "Cereales de desayuno de espelta con leche de almendra",
       "Fresas",
       "Té de jengibre"
-  ],
-  lunch: [
+    ],
+    [
       "Carne de cerdo asada con hierbas",
       "Quinoa con calabaza y pimiento rojo",
       "Kiwi",
       "Agua con gas"
-  ],
-  dinner: [
+    ],
+    [
       "Huevos cocidos con espinacas y cilantro",
       "Tortitas de maíz",
       "Uvas",
       "Té verde"
-  ]
-};
+    ]
+  );
 
-const diet_day6: Diet = {
-  breakfast: [
+  const diet_day6: Diet = new Diet(
+    [
       "Galletas sin gluten con mantequilla sin lactosa",
       "Leche de arroz",
       "Banana",
       "Té de menta"
-  ],
-  lunch: [
+    ],
+    [
       "Pechuga de pavo a la plancha",
       "Arroz con lechuga, pepino y zanahoria",
       "Naranja",
       "Agua con gas"
-  ],
-  dinner: [
+    ],
+    [
       "Pescado blanco al vapor con espinacas",
       "Patata asada con rúcula",
       "Fresas",
       "Té de jengibre"
-  ]
-};
+    ]
+  );
 
-const diet_day7: Diet = {
-  breakfast: [
+  const diet_day7: Diet = new Diet(
+    [
       "Pan de avena con mantequilla sin lactosa",
       "Yogur sin lactosa con kiwi",
       "Café con leche sin lactosa"
-  ],
-  lunch: [
+    ],
+    [
       "Carne de ternera estofada con zanahorias",
       "Polenta con calabacín y berenjena",
       "Mandarina",
       "Agua con gas"
-  ],
-  dinner: [
+    ],
+    [
       "Huevos revueltos con espinacas y tomate",
       "Tortitas de arroz",
       "Melón",
       "Té verde"
-  ]
-};
-
-
+    ]
+  );
 
 const diets = [diet_day1, diet_day2, diet_day3, diet_day4, diet_day5, diet_day6, diet_day7];
 

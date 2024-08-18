@@ -13,7 +13,7 @@ export class Diet {
 
 
 
-    deleteItem(item: string): void {
+    deleteItem(item: String): void {
         if (this.breakfast.includes(item)) {
             this.breakfast = this.breakfast.filter(food => food !== item);
         } else if (this.lunch.includes(item)) {

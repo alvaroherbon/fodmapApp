@@ -29,7 +29,7 @@ export class DietWindowComponent implements OnInit {
     this.showInput = true
   }
 
-  deleteItem(item : string){
+  deleteItem(item : String){
     this.dieta?.deleteItem(item);
     if (this.dieta) {
       this.foodService.saveDiet(this.dieta);
